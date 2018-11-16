@@ -1,4 +1,4 @@
-# This project is a cloned version of David Gageot's legacy code presentation
+# This java project is a cloned version of David Gageot's legacy code presentation
 
 ## Your tasks
 
