@@ -8,8 +8,6 @@ import java.util.Random;
 
 public class GameRunner {
 
-    private static boolean notAWinner;
-
     public static void main(String[] args) {
 
         Random rand = new Random();
@@ -19,22 +17,12 @@ public class GameRunner {
     }
 
     public static void run(Random rand) {
-        Game aGame = new Game();
+        Game treviaGame = new Game();
+        treviaGame.add("Chet");
+        treviaGame.add("Pat");
+        treviaGame.add("Sue");
 
-        aGame.add("Chet");
-        aGame.add("Pat");
-        aGame.add("Sue");
-        do {
-
-            aGame.roll(rand.nextInt(5) + 1);
-
-            if (rand.nextInt(9) == 7) {
-                notAWinner = aGame.wrongAnswer();
-            } else {
-                notAWinner = aGame.wasCorrectlyAnswered();
-            }
-
-
-        } while (notAWinner);
+        treviaGame.play(rand);
     }
+
 }

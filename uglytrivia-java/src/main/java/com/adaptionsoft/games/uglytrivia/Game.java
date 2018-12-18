@@ -2,6 +2,7 @@ package com.adaptionsoft.games.uglytrivia;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.Random;
 
 public class Game {
     ArrayList players = new ArrayList();
@@ -24,6 +25,22 @@ public class Game {
             sportsQuestions.addLast(("Sports Question " + i));
             rockQuestions.addLast(createRockQuestion(i));
         }
+    }
+
+    public void play(Random rand) {
+        boolean notAWinner;
+        do {
+
+            roll(rand.nextInt(5) + 1);
+
+            if (rand.nextInt(9) == 7) {
+                notAWinner = wrongAnswer();
+            } else {
+                notAWinner = wasCorrectlyAnswered();
+            }
+
+
+        } while (notAWinner);
     }
 
     public String createRockQuestion(int index) {
