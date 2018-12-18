@@ -2,41 +2,62 @@ package com.adaptionsoft.games.uglytrivia;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.Random;
 
 public class Game {
-    ArrayList players = new ArrayList();
-    int[] places = new int[6];
-    int[] purses = new int[6];
-    boolean[] inPenaltyBox = new boolean[6];
+    private final int NUMBER_OF_COINS_TO_WIN = 6;
+    private ArrayList<String> players = new ArrayList<>();
+    private int[] places = new int[6];
+    private int[] purses = new int[6];
+    private boolean[] inPenaltyBox = new boolean[6];
 
-    LinkedList popQuestions = new LinkedList();
-    LinkedList scienceQuestions = new LinkedList();
-    LinkedList sportsQuestions = new LinkedList();
-    LinkedList rockQuestions = new LinkedList();
+    private LinkedList<String> popQuestions = new LinkedList<>();
+    private LinkedList<String> scienceQuestions = new LinkedList<>();
+    private LinkedList<String> sportsQuestions = new LinkedList<>();
+    private LinkedList<String> rockQuestions = new LinkedList<>();
 
-    int currentPlayer = 0;
-    boolean isGettingOutOfPenaltyBox;
+    private int currentPlayer = 0;
+    private boolean isGettingOutOfPenaltyBox;
 
     public Game() {
         for (int i = 0; i < 50; i++) {
             popQuestions.addLast("Pop Question " + i);
-            scienceQuestions.addLast(("Science Question " + i));
-            sportsQuestions.addLast(("Sports Question " + i));
+            scienceQuestions.addLast("Science Question " + i);
+            sportsQuestions.addLast("Sports Question " + i);
             rockQuestions.addLast(createRockQuestion(i));
         }
     }
 
-    public String createRockQuestion(int index) {
+    public void play(Random rand) {
+        boolean notAWinner = true;
+        do {
+
+            rollTheDice(rand);
+
+            if (isWrongAnswer(rand)) {
+                responseWrongAnswer();
+            } else {
+                responseCorrectAnswer();
+                notAWinner = didPlayerWin();
+            }
+            nextPlayer();
+
+        } while (notAWinner);
+    }
+
+    private void rollTheDice(Random rand) {
+        roll(rand.nextInt(5) + 1);
+    }
+
+    private boolean isWrongAnswer(Random rand) {
+        return rand.nextInt(9) == 7;
+    }
+
+    private String createRockQuestion(int index) {
         return "Rock Question " + index;
     }
 
-    public boolean isPlayable() {
-        return (howManyPlayers() >= 2);
-    }
-
-    public boolean add(String playerName) {
-
-
+    public void add(String playerName) {
         players.add(playerName);
         places[howManyPlayers()] = 0;
         purses[howManyPlayers()] = 0;
@@ -44,58 +65,61 @@ public class Game {
 
         System.out.println(playerName + " was added");
         System.out.println("They are player number " + players.size());
-        return true;
     }
 
-    public int howManyPlayers() {
+    private int howManyPlayers() {
         return players.size();
     }
 
-    public void roll(int roll) {
+    private void roll(int roll) {
         System.out.println(players.get(currentPlayer) + " is the current player");
         System.out.println("They have rolled a " + roll);
 
-        if (inPenaltyBox[currentPlayer]) {
-            if (roll % 2 != 0) {
-                isGettingOutOfPenaltyBox = true;
-
-                System.out.println(players.get(currentPlayer) + " is getting out of the penalty box");
-                places[currentPlayer] = places[currentPlayer] + roll;
-                if (places[currentPlayer] > 11) places[currentPlayer] = places[currentPlayer] - 12;
-
-                System.out.println(players.get(currentPlayer)
-                        + "'s new location is "
-                        + places[currentPlayer]);
-                System.out.println("The category is " + currentCategory());
-                askQuestion();
-            } else {
+        if (currentPlayerIsInThePenaltyBox()) {
+            if (!currentPlayerCanLeaveThePenaltyBox(roll)) {
                 System.out.println(players.get(currentPlayer) + " is not getting out of the penalty box");
                 isGettingOutOfPenaltyBox = false;
+                return;
             }
 
-        } else {
-
-            places[currentPlayer] = places[currentPlayer] + roll;
-            if (places[currentPlayer] > 11) places[currentPlayer] = places[currentPlayer] - 12;
-
-            System.out.println(players.get(currentPlayer)
-                    + "'s new location is "
-                    + places[currentPlayer]);
-            System.out.println("The category is " + currentCategory());
-            askQuestion();
+            isGettingOutOfPenaltyBox = true;
+            System.out.println(players.get(currentPlayer) + " is getting out of the penalty box");
         }
+        movePlayer(roll);
+        System.out.println("The category is " + currentCategory());
+        askQuestion();
 
     }
 
+    private boolean currentPlayerCanLeaveThePenaltyBox(int roll) {
+        return roll % 2 != 0;
+    }
+
+    private boolean currentPlayerIsInThePenaltyBox() {
+        return inPenaltyBox[currentPlayer];
+    }
+
+    private void movePlayer(int roll) {
+        places[currentPlayer] += roll;
+        places[currentPlayer] %= 12;
+        System.out.println(players.get(currentPlayer)
+                + "'s new location is "
+                + places[currentPlayer]);
+    }
+
     private void askQuestion() {
-        if (currentCategory() == "Pop")
+        if (currentCategory().equals("Pop")) {
             System.out.println(popQuestions.removeFirst());
-        if (currentCategory() == "Science")
+        }
+        if (currentCategory().equals("Science")) {
             System.out.println(scienceQuestions.removeFirst());
-        if (currentCategory() == "Sports")
+        }
+        if (currentCategory().equals("Sports")) {
             System.out.println(sportsQuestions.removeFirst());
-        if (currentCategory() == "Rock")
+        }
+        if (currentCategory().equals("Rock")) {
             System.out.println(rockQuestions.removeFirst());
+        }
     }
 
 
@@ -112,57 +136,29 @@ public class Game {
         return "Rock";
     }
 
-    public boolean wasCorrectlyAnswered() {
-        if (inPenaltyBox[currentPlayer]) {
-            if (isGettingOutOfPenaltyBox) {
-                System.out.println("Answer was correct!!!!");
-                purses[currentPlayer]++;
-                System.out.println(players.get(currentPlayer)
-                        + " now has "
-                        + purses[currentPlayer]
-                        + " Gold Coins.");
-
-                boolean winner = didPlayerWin();
-                currentPlayer++;
-                if (currentPlayer == players.size()) currentPlayer = 0;
-
-                return winner;
-            } else {
-                currentPlayer++;
-                if (currentPlayer == players.size()) currentPlayer = 0;
-                return true;
-            }
-
-
-        } else {
-
-            System.out.println("Answer was corrent!!!!");
-            purses[currentPlayer]++;
-            System.out.println(players.get(currentPlayer)
-                    + " now has "
-                    + purses[currentPlayer]
-                    + " Gold Coins.");
-
-            boolean winner = didPlayerWin();
-            currentPlayer++;
-            if (currentPlayer == players.size()) currentPlayer = 0;
-
-            return winner;
-        }
+    private void responseCorrectAnswer() {
+        System.out.println("Answer was correct!!!!");
+        purses[currentPlayer]++;
+        System.out.println(players.get(currentPlayer)
+                + " now has "
+                + purses[currentPlayer]
+                + " Gold Coins.");
     }
 
-    public boolean wrongAnswer() {
+    private void nextPlayer() {
+        currentPlayer = (currentPlayer + 1) % players.size();
+    }
+
+    private void responseWrongAnswer() {
         System.out.println("Question was incorrectly answered");
         System.out.println(players.get(currentPlayer) + " was sent to the penalty box");
         inPenaltyBox[currentPlayer] = true;
-
-        currentPlayer++;
-        if (currentPlayer == players.size()) currentPlayer = 0;
-        return true;
     }
 
-
     private boolean didPlayerWin() {
-        return !(purses[currentPlayer] == 6);
+        if (currentPlayerIsInThePenaltyBox() && !isGettingOutOfPenaltyBox) {
+            return true;
+        }
+        return !(purses[currentPlayer] == NUMBER_OF_COINS_TO_WIN);
     }
 }
