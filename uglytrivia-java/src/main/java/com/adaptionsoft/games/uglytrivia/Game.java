@@ -21,27 +21,35 @@ public class Game {
     public Game() {
         for (int i = 0; i < 50; i++) {
             popQuestions.addLast("Pop Question " + i);
-            scienceQuestions.addLast(("Science Question " + i));
-            sportsQuestions.addLast(("Sports Question " + i));
+            scienceQuestions.addLast("Science Question " + i);
+            sportsQuestions.addLast("Sports Question " + i);
             rockQuestions.addLast(createRockQuestion(i));
         }
     }
 
     public void play(Random rand) {
-        boolean notAWinner;
+        boolean notAWinner = true;
         do {
 
-            roll(rand.nextInt(5) + 1);
+            rollTheDice(rand);
 
-            if (rand.nextInt(9) == 7) {
+            if (isWrongAnswer(rand)) {
                 responseWrongAnswer();
-                notAWinner = true;
             } else {
-                notAWinner = responseCorrectAnswer();
+                responseCorrectAnswer();
+                notAWinner = didPlayerWin();
             }
-
+            nextPlayer();
 
         } while (notAWinner);
+    }
+
+    private void rollTheDice(Random rand) {
+        roll(rand.nextInt(5) + 1);
+    }
+
+    private boolean isWrongAnswer(Random rand) {
+        return rand.nextInt(9) == 7;
     }
 
     private String createRockQuestion(int index) {
@@ -125,41 +133,30 @@ public class Game {
         return "Rock";
     }
 
-    private boolean responseCorrectAnswer() {
-        if (currentPlayerIsInThePenaltyBox()) {
-            if (!isGettingOutOfPenaltyBox) {
-                currentPlayer++;
-                if (currentPlayer == players.size()) currentPlayer = 0;
-                return true;
-            }
-        }
-
+    private void responseCorrectAnswer() {
         System.out.println("Answer was correct!!!!");
-
         purses[currentPlayer]++;
         System.out.println(players.get(currentPlayer)
                 + " now has "
                 + purses[currentPlayer]
                 + " Gold Coins.");
+    }
 
-        boolean winner = didPlayerWin();
-        currentPlayer++;
-        if (currentPlayer == players.size()) currentPlayer = 0;
-
-        return winner;
+    private void nextPlayer() {
+        currentPlayer = (currentPlayer + 1) % players.size();
     }
 
     private void responseWrongAnswer() {
         System.out.println("Question was incorrectly answered");
         System.out.println(players.get(currentPlayer) + " was sent to the penalty box");
         inPenaltyBox[currentPlayer] = true;
-
-        currentPlayer++;
-        if (currentPlayer == players.size()) currentPlayer = 0;
     }
 
 
     private boolean didPlayerWin() {
+        if (currentPlayerIsInThePenaltyBox() && !isGettingOutOfPenaltyBox) {
+            return true;
+        }
         return !(purses[currentPlayer] == 6);
     }
 }
