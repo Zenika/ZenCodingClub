@@ -148,7 +148,7 @@ public class Game {
 
         } else {
 
-            System.out.println("Answer was current!!!!");
+            System.out.println("Answer was correct!!!!");
             purses[currentPlayer]++;
             System.out.println(players.get(currentPlayer)
                     + " now has "
