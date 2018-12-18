@@ -5,18 +5,18 @@ import java.util.LinkedList;
 import java.util.Random;
 
 public class Game {
-    private ArrayList players = new ArrayList();
+    private ArrayList<String> players = new ArrayList<>();
     private int[] places = new int[6];
     private int[] purses = new int[6];
     private boolean[] inPenaltyBox = new boolean[6];
 
-    private LinkedList popQuestions = new LinkedList();
-    private LinkedList scienceQuestions = new LinkedList();
-    private LinkedList sportsQuestions = new LinkedList();
-    private LinkedList rockQuestions = new LinkedList();
+    private LinkedList<String> popQuestions = new LinkedList<>();
+    private LinkedList<String> scienceQuestions = new LinkedList<>();
+    private LinkedList<String> sportsQuestions = new LinkedList<>();
+    private LinkedList<String> rockQuestions = new LinkedList<>();
 
-    int currentPlayer = 0;
-    boolean isGettingOutOfPenaltyBox;
+    private int currentPlayer = 0;
+    private boolean isGettingOutOfPenaltyBox;
 
     public Game() {
         for (int i = 0; i < 50; i++) {
@@ -43,15 +43,11 @@ public class Game {
         } while (notAWinner);
     }
 
-    public String createRockQuestion(int index) {
+    private String createRockQuestion(int index) {
         return "Rock Question " + index;
     }
 
-    public boolean isPlayable() {
-        return (howManyPlayers() >= 2);
-    }
-
-    public boolean add(String playerName) {
+    public void add(String playerName) {
 
 
         players.add(playerName);
@@ -61,14 +57,13 @@ public class Game {
 
         System.out.println(playerName + " was added");
         System.out.println("They are player number " + players.size());
-        return true;
     }
 
-    public int howManyPlayers() {
+    private int howManyPlayers() {
         return players.size();
     }
 
-    public void roll(int roll) {
+    private void roll(int roll) {
         System.out.println(players.get(currentPlayer) + " is the current player");
         System.out.println("They have rolled a " + roll);
 
@@ -105,13 +100,13 @@ public class Game {
     }
 
     private void askQuestion() {
-        if (currentCategory() == "Pop")
+        if (currentCategory().equals("Pop"))
             System.out.println(popQuestions.removeFirst());
-        if (currentCategory() == "Science")
+        if (currentCategory().equals("Science"))
             System.out.println(scienceQuestions.removeFirst());
-        if (currentCategory() == "Sports")
+        if (currentCategory().equals("Sports"))
             System.out.println(sportsQuestions.removeFirst());
-        if (currentCategory() == "Rock")
+        if (currentCategory().equals("Rock"))
             System.out.println(rockQuestions.removeFirst());
     }
 
@@ -129,7 +124,7 @@ public class Game {
         return "Rock";
     }
 
-    public boolean wasCorrectlyAnswered() {
+    private boolean wasCorrectlyAnswered() {
         if (inPenaltyBox[currentPlayer]) {
             if (isGettingOutOfPenaltyBox) {
                 System.out.println("Answer was correct!!!!");
@@ -153,7 +148,7 @@ public class Game {
 
         } else {
 
-            System.out.println("Answer was corrent!!!!");
+            System.out.println("Answer was current!!!!");
             purses[currentPlayer]++;
             System.out.println(players.get(currentPlayer)
                     + " now has "
@@ -168,7 +163,7 @@ public class Game {
         }
     }
 
-    public boolean wrongAnswer() {
+    private boolean wrongAnswer() {
         System.out.println("Question was incorrectly answered");
         System.out.println(players.get(currentPlayer) + " was sent to the penalty box");
         inPenaltyBox[currentPlayer] = true;
