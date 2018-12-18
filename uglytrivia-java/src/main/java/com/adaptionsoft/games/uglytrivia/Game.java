@@ -5,6 +5,7 @@ import java.util.LinkedList;
 import java.util.Random;
 
 public class Game {
+    private final int NUMBER_OF_COINS_TO_WIN = 6;
     private ArrayList<String> players = new ArrayList<>();
     private int[] places = new int[6];
     private int[] purses = new int[6];
@@ -57,8 +58,6 @@ public class Game {
     }
 
     public void add(String playerName) {
-
-
         players.add(playerName);
         places[howManyPlayers()] = 0;
         purses[howManyPlayers()] = 0;
@@ -109,14 +108,18 @@ public class Game {
     }
 
     private void askQuestion() {
-        if (currentCategory().equals("Pop"))
+        if (currentCategory().equals("Pop")) {
             System.out.println(popQuestions.removeFirst());
-        if (currentCategory().equals("Science"))
+        }
+        if (currentCategory().equals("Science")) {
             System.out.println(scienceQuestions.removeFirst());
-        if (currentCategory().equals("Sports"))
+        }
+        if (currentCategory().equals("Sports")) {
             System.out.println(sportsQuestions.removeFirst());
-        if (currentCategory().equals("Rock"))
+        }
+        if (currentCategory().equals("Rock")) {
             System.out.println(rockQuestions.removeFirst());
+        }
     }
 
 
@@ -152,11 +155,10 @@ public class Game {
         inPenaltyBox[currentPlayer] = true;
     }
 
-
     private boolean didPlayerWin() {
         if (currentPlayerIsInThePenaltyBox() && !isGettingOutOfPenaltyBox) {
             return true;
         }
-        return !(purses[currentPlayer] == 6);
+        return !(purses[currentPlayer] == NUMBER_OF_COINS_TO_WIN);
     }
 }
