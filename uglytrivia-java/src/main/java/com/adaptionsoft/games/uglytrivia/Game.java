@@ -67,36 +67,36 @@ public class Game {
         System.out.println(players.get(currentPlayer) + " is the current player");
         System.out.println("They have rolled a " + roll);
 
-        if (inPenaltyBox[currentPlayer]) {
-            if (roll % 2 != 0) {
-                isGettingOutOfPenaltyBox = true;
-
-                System.out.println(players.get(currentPlayer) + " is getting out of the penalty box");
-                places[currentPlayer] = places[currentPlayer] + roll;
-                if (places[currentPlayer] > 11) places[currentPlayer] = places[currentPlayer] - 12;
-
-                System.out.println(players.get(currentPlayer)
-                        + "'s new location is "
-                        + places[currentPlayer]);
-                System.out.println("The category is " + currentCategory());
-                askQuestion();
-            } else {
+        if (currentPlayerIsInPenaltyBox()) {
+            if (!currentPlayerCanLeaveThePenaltyBox(roll)) {
                 System.out.println(players.get(currentPlayer) + " is not getting out of the penalty box");
                 isGettingOutOfPenaltyBox = false;
+                return;
             }
 
-        } else {
-
-            places[currentPlayer] = places[currentPlayer] + roll;
-            if (places[currentPlayer] > 11) places[currentPlayer] = places[currentPlayer] - 12;
-
-            System.out.println(players.get(currentPlayer)
-                    + "'s new location is "
-                    + places[currentPlayer]);
-            System.out.println("The category is " + currentCategory());
-            askQuestion();
+            isGettingOutOfPenaltyBox = true;
+            System.out.println(players.get(currentPlayer) + " is getting out of the penalty box");
         }
+        movePlayer(roll);
+        System.out.println("The category is " + currentCategory());
+        askQuestion();
 
+    }
+
+    private boolean currentPlayerCanLeaveThePenaltyBox(int roll) {
+        return roll % 2 != 0;
+    }
+
+    private boolean currentPlayerIsInPenaltyBox() {
+        return inPenaltyBox[currentPlayer];
+    }
+
+    private void movePlayer(int roll) {
+        places[currentPlayer] = places[currentPlayer] + roll;
+        if (places[currentPlayer] > 11) places[currentPlayer] = places[currentPlayer] - 12;
+        System.out.println(players.get(currentPlayer)
+                + "'s new location is "
+                + places[currentPlayer]);
     }
 
     private void askQuestion() {
@@ -125,7 +125,7 @@ public class Game {
     }
 
     private boolean wasCorrectlyAnswered() {
-        if (inPenaltyBox[currentPlayer]) {
+        if (currentPlayerIsInPenaltyBox()) {
             if (isGettingOutOfPenaltyBox) {
                 System.out.println("Answer was correct!!!!");
                 purses[currentPlayer]++;
@@ -148,7 +148,7 @@ public class Game {
 
         } else {
 
-            System.out.println("Answer was correct!!!!");
+            System.out.println("Answer was corrent!!!!");
             purses[currentPlayer]++;
             System.out.println(players.get(currentPlayer)
                     + " now has "
