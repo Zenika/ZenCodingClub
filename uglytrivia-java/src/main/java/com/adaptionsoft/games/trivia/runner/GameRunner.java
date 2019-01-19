@@ -2,7 +2,10 @@
 package com.adaptionsoft.games.trivia.runner;
 
 import com.adaptionsoft.games.uglytrivia.Game;
+import com.adaptionsoft.games.uglytrivia.Player;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 
@@ -17,12 +20,11 @@ public class GameRunner {
     }
 
     public static void run(Random rand) {
-        Game treviaGame = new Game();
-        treviaGame.add("Chet");
-        treviaGame.add("Pat");
-        treviaGame.add("Sue");
-
-        treviaGame.play(rand);
+        Game triviaGame = Game.withPlayerName("Chet")
+                .andName("Pat")
+                .andName("Sue")
+                .andRandom(rand);
+        triviaGame.play();
     }
 
 }
