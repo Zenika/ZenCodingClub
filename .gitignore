@@ -1,6 +1,6 @@
-.DS_STORE
-target/
-.idea
+**/.DS_STORE
+**/target/
+**/.idea
 *.iml
-.project
-.classpath
+**/.project
+**/.classpath
