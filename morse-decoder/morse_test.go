@@ -1,278 +1,124 @@
 package main
 
 import (
-	"strings"
 	"testing"
 )
 
-func decodeMorse(s string) string {
-
-	dictionnaire := map[string]string{
-		".-":   "A",
-		"-...": "B",
-		"-.-.": "C",
-		"-..":  "D",
-		".":    "E",
-		"..-.": "F",
-		"--.":  "G",
-		"....": "H",
-		"..":   "I",
-		".---": "J",
-		"-.-":  "K",
-		".-..": "L",
-		"--":   "M",
-		"-.":   "N",
-		"---":  "O",
-		".--.": "P",
-		"--.-": "Q",
-		".-.":  "R",
-		"...":  "S",
-		"-":    "T",
-		"..-":  "U",
-		"...-": "V",
-		".--":  "W",
-		"-..-": "X",
-		"-.--": "Y",
-		"--..": "Z",
-	}
-
-	if strings.Contains(s, " ") {
-		parts := strings.Split(s, " ")
-		return dictionnaire[parts[0]] + dictionnaire[parts[1]]
-	}
-
-	return dictionnaire[s]
-
-}
-
 func TestDecodeUneChaineVide(t *testing.T) {
-
-	if decodeMorse("") != "" {
-
-		t.Fatalf("failed")
-	}
+	test(t, decodeMorse(""), "", "decode une chaine vide")
 }
 
 func TestDecodeLaLettreA(t *testing.T) {
-
-	if decodeMorse(".-") != "A" {
-
-		t.Fatalf("failed")
-	}
+	test(t, decodeMorse(".-"), "A", "decode la lettre A")
 }
 
 func TestDecodeLaLettreB(t *testing.T) {
-
-	if decodeMorse("-...") != "B" {
-
-		t.Fatalf("failed")
-	}
+	test(t, decodeMorse("-..."), "B", "decode la lettre B")
 }
 
 func TestDecodeLaLettreC(t *testing.T) {
-
-	if decodeMorse("-.-.") != "C" {
-
-		t.Fatalf("failed")
-	}
+	test(t, decodeMorse("-.-."), "C", "decode la lettre C")
 }
 
 func TestDecodeLaLettreD(t *testing.T) {
-
-	if decodeMorse("-..") != "D" {
-
-		t.Fatalf("failed")
-	}
+	test(t, decodeMorse("-.."), "D", "decode la lettre D")
 }
 
 func TestDecodeLaLettreE(t *testing.T) {
-
-	if decodeMorse(".") != "E" {
-
-		t.Fatalf("failed")
-	}
+	test(t, decodeMorse("."), "E", "decode la lettre E")
 }
 
 func TestDecodeLaLettreF(t *testing.T) {
-
-	if decodeMorse("..-.") != "F" {
-
-		t.Fatalf("failed")
-	}
+	test(t, decodeMorse("..-."), "F", "decode la lettre F")
 }
 
 func TestDecodeLaLettreG(t *testing.T) {
-
-	if decodeMorse("--.") != "G" {
-
-		t.Fatalf("failed")
-	}
+	test(t, decodeMorse("--."), "G", "decode la lettre G")
 }
 
 func TestDecodeLaLettreH(t *testing.T) {
-
-	if decodeMorse("....") != "H" {
-
-		t.Fatalf("failed")
-	}
+	test(t, decodeMorse("...."), "H", "decode la lettre H")
 }
 
 func TestDecodeLaLettreI(t *testing.T) {
-
-	if decodeMorse("..") != "I" {
-
-		t.Fatalf("failed")
-	}
+	test(t, decodeMorse(".."), "I", "decode la lettre I")
 }
 
 func TestDecodeLaLettreJ(t *testing.T) {
-
-	if decodeMorse(".---") != "J" {
-
-		t.Fatalf("failed")
-	}
+	test(t, decodeMorse(".---"), "J", "decode la lettre J")
 }
 
 func TestDecodeLaLettreK(t *testing.T) {
-
-	if decodeMorse("-.-") != "K" {
-
-		t.Fatalf("failed")
-	}
+	test(t, decodeMorse("-.-"), "K", "decode la lettre K")
 }
 
 func TestDecodeLaLettreL(t *testing.T) {
-
-	if decodeMorse(".-..") != "L" {
-
-		t.Fatalf("failed")
-	}
+	test(t, decodeMorse(".-.."), "L", "decode la lettre L")
 }
 
 func TestDecodeLaLettreM(t *testing.T) {
-
-	if decodeMorse("--") != "M" {
-
-		t.Fatalf("failed")
-	}
+	test(t, decodeMorse("--"), "M", "decode la lettre M")
 }
 
 func TestDecodeLaLettreN(t *testing.T) {
-
-	if decodeMorse("-.") != "N" {
-
-		t.Fatalf("failed")
-	}
+	test(t, decodeMorse("-."), "N", "decode la lettre N")
 }
 
 func TestDecodeLaLettreO(t *testing.T) {
-
-	if decodeMorse("---") != "O" {
-
-		t.Fatalf("failed")
-	}
+	test(t, decodeMorse("---"), "O", "decode la lettre O")
 }
 
 func TestDecodeLaLettreP(t *testing.T) {
-
-	if decodeMorse(".--.") != "P" {
-
-		t.Fatalf("failed")
-	}
+	test(t, decodeMorse(".--."), "P", "decode la lettre P")
 }
 
 func TestDecodeLaLettreQ(t *testing.T) {
-
-	if decodeMorse("--.-") != "Q" {
-
-		t.Fatalf("failed")
-	}
+	test(t, decodeMorse("--.-"), "Q", "decode la lettre Q")
 }
 
 func TestDecodeLaLettreR(t *testing.T) {
-
-	if decodeMorse(".-.") != "R" {
-
-		t.Fatalf("failed")
-	}
+	test(t, decodeMorse(".-."), "R", "decode la lettre R")
 }
 
 func TestDecodeLaLettreS(t *testing.T) {
-
-	if decodeMorse("...") != "S" {
-
-		t.Fatalf("failed")
-	}
+	test(t, decodeMorse("..."), "S", "decode la lettre S")
 }
 
 func TestDecodeLaLettreT(t *testing.T) {
-
-	if decodeMorse("-") != "T" {
-
-		t.Fatalf("failed")
-	}
+	test(t, decodeMorse("-"), "T", "decode la lettre T")
 }
 
 func TestDecodeLaLettreU(t *testing.T) {
-
-	if decodeMorse("..-") != "U" {
-
-		t.Fatalf("failed")
-	}
+	test(t, decodeMorse("..-"), "U", "decode la lettre U")
 }
 
 func TestDecodeLaLettreV(t *testing.T) {
-
-	if decodeMorse("...-") != "V" {
-
-		t.Fatalf("failed")
-	}
+	test(t, decodeMorse("...-"), "V", "decode la lettre V")
 }
 
 func TestDecodeLaLettreW(t *testing.T) {
-
-	if decodeMorse(".--") != "W" {
-
-		t.Fatalf("failed")
-	}
+	test(t, decodeMorse(".--"), "W", "decode la lettre W")
 }
 
 func TestDecodeLaLettreX(t *testing.T) {
-
-	if decodeMorse("-..-") != "X" {
-
-		t.Fatalf("failed")
-	}
+	test(t, decodeMorse("-..-"), "X", "decode la lettre X")
 }
 
 func TestDecodeLaLettreY(t *testing.T) {
-
-	if decodeMorse("-.--") != "Y" {
-
-		t.Fatalf("failed")
-	}
+	test(t, decodeMorse("-.--"), "Y", "decode la lettre Y")
 }
 
 func TestDecodeLaLettreZ(t *testing.T) {
-
-	if decodeMorse("--..") != "Z" {
-
-		t.Fatalf("failed")
-	}
+	test(t, decodeMorse("--.."), "Z", "decode la lettre Z")
 }
 
 func TestDecodeUnMotDe2Lettres(t *testing.T) {
-
-	if decodeMorse(".... ..") != "HI" {
-
-		t.Fatalf("failed")
-	}
+	test(t, decodeMorse(".... .."), "HI", "decode le mot HI")
 }
 
 func TestDecodeUnMotDe3Lettres(t *testing.T) {
-
-	if decodeMorse(".... . -.--") != "HEY" {
-
-		t.Fatalf("failed")
-	}
+	test(t, decodeMorse(".... . -.--"), "HEY", "decode le mot HEY")
+}
+func TestDecode2Mots(t *testing.T) {
+	test(t, decodeMorse(".... . .-.. .-.. ---     .-- --- .-. .-.. -.."), "HELLO WORLD", "decode le message HELLO WORLD")
 }
